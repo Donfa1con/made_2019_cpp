@@ -21,7 +21,7 @@ bool Matrix::operator==(const Matrix& other) const {
     if (nrows != other.nrows || ncols != other.ncols) {
         return false;
     }
-    for (int i = 0; i < nrows * ncols; ++i) {
+    for (size_t i = 0; i < nrows * ncols; ++i) {
         if (data[i] != other.data[i]) {
             return false;
         }
@@ -29,24 +29,23 @@ bool Matrix::operator==(const Matrix& other) const {
     return true;
 }
 
-bool Matrix::operator!=(const Matrix& other) const{
+bool Matrix::operator!=(const Matrix& other) const {
     return !(*this == other);
 }
 
 Matrix& Matrix::operator*=(int value) {
-    for (int i = 0; i < nrows * ncols; ++i) {
+    for (size_t i = 0; i < nrows * ncols; ++i) {
         data[i] *= value;
     }
     return *this;
 }
 
-const Matrix::Row& Matrix::operator[](size_t row) const {
+const Matrix::Row Matrix::operator[](size_t row) const {
     return Row(row, *this);
 }
 
-Matrix::Row& Matrix::operator[](size_t row) {
-    Row ret_row = Row(row, *this);
-    return ret_row;
+Matrix::Row Matrix::operator[](size_t row) {
+    return Row(row, *this);
 }
 
 const int& Matrix::Row::operator[](size_t col) const {

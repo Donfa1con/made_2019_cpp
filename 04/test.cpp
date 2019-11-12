@@ -18,6 +18,7 @@ int main(int argc, const char * argv[]) {
             m2[i][j] = i * j * 2;
         }
     }
+
     m1 *= 2;
     assert(m1 == m2);
     assert(!(m1 != m2));
@@ -27,6 +28,14 @@ int main(int argc, const char * argv[]) {
     m1[3][3] = 55;
     int tmp = m1[3][3];
     assert(tmp == 55);
+
+    try {
+        m1[1][5];
+        assert(false);
+    } catch (std::out_of_range) {
+        assert(true);
+    }
+
     std::cout << "Tests passed!" << std::endl;
     return 0;
 }

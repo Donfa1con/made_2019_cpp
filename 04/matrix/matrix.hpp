@@ -21,8 +21,8 @@ class Matrix {
         const size_t row;
         const Matrix& matrix;
     };
-    const Row& operator[] (size_t row) const;
-    Row& operator[] (size_t row);
+    const Row operator[] (size_t row) const;
+    Row operator[] (size_t row);
 
     size_t get_rows() const;
     size_t get_columns() const;
