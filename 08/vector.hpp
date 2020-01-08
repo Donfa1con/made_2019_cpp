@@ -53,7 +53,7 @@ class Vector {
     
     void push_back(value_type&& value) {
         check_capacity();
-        alloc_.construct(&data_[size_++], value);
+        alloc_.construct(&data_[size_++], std::move(value));
     }
     
     void push_back(const value_type& value) {
@@ -145,7 +145,7 @@ Vector<T, Allocator>::Vector(std::initializer_list<value_type> init)
     auto current = init.begin();
     const auto end = init.end();
     while (current != end) {
-        data_[i++] = *current++;
+        alloc_.construct(&data_[i], *current++);
     }
 }
 
