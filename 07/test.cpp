@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "format.hpp"
+#include "format/format.hpp"
 
 struct Custom {};
 
