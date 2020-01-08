@@ -25,10 +25,10 @@ class Deserializer {
     template<class T, class... Args>
     Error process(T& value, Args&&... args) {
         Error err1 = process(value);
-        Error err2 = process(std::forward<Args>(args)...);
         if (err1 != Error::NoError) {
             return err1;
         }
+        Error err2 = process(std::forward<Args>(args)...);
         if (err2 != Error::NoError) {
             return err2;
         }
@@ -51,15 +51,20 @@ class Deserializer {
     Error process(uint64_t& value) {
         std::string text;
         in_ >> text;
-        if (text.empty()) {
+        if (text.empty() || text.size() > 20) {
             return Error::CorruptedArchive;
+        }
+        for (auto symbol: text) {
+            if (!std::isdigit(symbol)) {
+                return Error::CorruptedArchive;
+            }
         }
         value = std::strtoull(text.c_str(), nullptr, 10);
         return Error::NoError;
     }
     
     template<class T>
-    Error process(T) {
+    Error process(T&&) {
         return Error::UnsupportedType;
     }
     

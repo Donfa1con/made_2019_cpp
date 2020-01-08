@@ -114,7 +114,8 @@ void test_large2small() {
 }
 
 void test_filestream() {
-    std::fstream file("/tmp/test.txt");
+    std::fstream file("/tmp/test.txt",
+                      std::fstream::in | std::fstream::out |  std::fstream::trunc);
     Serializer serializer(file);
     Deserializer deserializer(file);
     Data1 x{1, true, 2};
@@ -137,6 +138,15 @@ void test_unsupported_type() {
     assert(err1 == Error::UnsupportedType);
 }
 
+void test_corrupted_archive() {
+    std::stringstream stream;
+    stream << 1 << " " << "123abc45";
+    Deserializer deserializer(stream);
+    Data1 y;
+    const Error err2 = deserializer.load(y);
+    assert(err2 == Error::CorruptedArchive);
+}
+
 int main() {
     test_equal();
     test_small2large();
@@ -144,7 +154,7 @@ int main() {
     test_diff_type();
     test_empty_stream();
     test_filestream();
-    test_unsupported_type();
+    test_corrupted_archive();
     std::cout << "Tests passed!" << std::endl;
     return 0;
 }
